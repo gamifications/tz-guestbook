@@ -3,11 +3,11 @@
    
     <v-alert
       border="bottom"
-      color="red"
+      color="green"
       dark
     >
-      <h1>Tezos Tweet:  Florencenet (testnet)</h1> 
-     The data is stored in a <a about="_blank" href="https://better-call.dev/florencenet/KT1QoBbDa9W6DJKbbAucoMdhNtFjdjvEGPqo/operations">smart contract</a> on the testnet. The testnet can be reset any time, so this data will likely get lost.
+      <h1>Tezos Tweet</h1> 
+     The data is stored in a <a style="color: #ccc" about="_blank" href="https://better-call.dev/mainnet/KT1D44p6zaTi5T4WCn7u5vmmapHGR1HXz1F8/operations">smart contract</a> on the mainnet.
     </v-alert>
     <v-main>
       <v-container>
@@ -29,8 +29,5 @@ export default {
 <style>
   .link {
     text-decoration: none;
-  }
-  a {
-    color: #ccc;
   }
 </style>

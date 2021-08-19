@@ -64,9 +64,9 @@ import { TezosToolkit } from '@taquito/taquito'
 import { BeaconWallet } from '@taquito/beacon-wallet'
 import { formatRelative } from 'date-fns'
 
-const contractAddress = 'KT1QoBbDa9W6DJKbbAucoMdhNtFjdjvEGPqo' // 'KT1NY6sHZnVrtCeCBeDHsQMEt2gJR6A9PC65' //'KT1QKfY2dQ49eLdqZjbN4LNNbPuJyTW718gW' // 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
-const rpc_addr = 'https://florencenet.smartpy.io/' // 'https://florence-tezos.giganode.io' // //'https://api.tez.ie/rpc/florencenet'
-const network = "florencenet"
+const contractAddress = 'KT1D44p6zaTi5T4WCn7u5vmmapHGR1HXz1F8' // 'KT1NY6sHZnVrtCeCBeDHsQMEt2gJR6A9PC65' //'KT1QKfY2dQ49eLdqZjbN4LNNbPuJyTW718gW' // 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
+const rpc_addr = 'https://mainnet.smartpy.io/' // 'https://florence-tezos.giganode.io' // //'https://api.tez.ie/rpc/florencenet'
+const network = "mainnet"
 
 
 
