@@ -74,7 +74,11 @@ import { TezosToolkit } from '@taquito/taquito'
 import { BeaconWallet } from '@taquito/beacon-wallet'
 import { formatRelative } from 'date-fns'
 
-const contractAddress = 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
+const contractAddress = 'KT1QYZftD8QWLoXSButfgRn5NGQtfYpA7yNH' // 'KT1NY6sHZnVrtCeCBeDHsQMEt2gJR6A9PC65' //'KT1QKfY2dQ49eLdqZjbN4LNNbPuJyTW718gW' // 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
+const rpc_addr = 'https://florencenet.smartpy.io/' // 'https://florence-tezos.giganode.io' // //'https://api.tez.ie/rpc/florencenet'
+const network = "florencenet"
+
+
 
 function escapeHtml (unsafe) {
   return unsafe
@@ -100,7 +104,7 @@ export default {
     }
   },
   mounted () {
-    this.Tezos = new TezosToolkit('https://edonet-tezos.giganode.io')
+    this.Tezos = new TezosToolkit(rpc_addr)
     this.refresh()
   },
   methods: {
@@ -132,9 +136,15 @@ export default {
       try {
         await wallet.requestPermissions({
           network: {
-            type: 'edonet'
-          }
-        })
+            type: network,
+            rpcUrl: rpc_addr,
+          },
+        });
+        // await wallet.requestPermissions({
+        //   network: {
+        //     type: 'edonet'
+        //   }
+        // })
       } catch (e) {
         this.error = e.description
         return
