@@ -1,6 +1,6 @@
 import smartpy as sp
 
-class Guestbook(sp.Contract):
+class TzTweet(sp.Contract):
     def __init__(self):
         self.init(
             dates = sp.list([]),
@@ -15,11 +15,11 @@ class Guestbook(sp.Contract):
         self.data.authors.push(params.a)
 
 # Tests
-@sp.add_test(name = "Guestbook")
+@sp.add_test(name = "Tz Tweet")
 def test1():
     scenario = sp.test_scenario()
-    scenario.h1("Welcome to Guestbook")
-    c1 = Guestbook()
+    scenario.h1("Welcome to Tz Tweet")
+    c1 = TzTweet()
     scenario += c1
     scenario += c1.add_entry(a = 'alice', e = 'hello from alice')
     scenario += c1.add_entry(a = 'bob', e = 'hello from bob')

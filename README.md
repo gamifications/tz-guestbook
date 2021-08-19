@@ -1,4 +1,4 @@
-# Tezos Guestbook
+# Tezos Tweet
 
 Tutorial: [Build your first DApp on Tezos in 2-4 hours](https://styts.com/your-first-tezos-dapp)  
 

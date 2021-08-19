@@ -7,62 +7,52 @@
       <v-alert v-if="confirming" type="info">
         Waiting to include the operation on the blockchain...
       </v-alert>
-      <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            Info
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <p>
-              This is a trivial guestbook DApp on the Tezos blockchain.
-            </p>
-            <p>
-              Tutorial: <a href="https://styts.com/your-first-tezos-dapp">Build your first DApp on Tezos in 2-4 hours</a>.
-            </p>
-            <p>
-              The data is stored in a <a
-                about="_blank"
-                href="https://better-call.dev/edo2net/KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX/operations">smart
-                contract</a> on the testnet. The testnet can be reset any time, so
-              this data will likely get lost. The submitted messages are
-              unfiltered, and might contain offensive content.
-            </p>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            Post Message
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div v-if="!sending">
-              <v-text-field v-model="author" outlined label="Author" />
-              <v-textarea v-model="message" class="mb-3" hide-details outlined label="Message" />
-              <v-btn class="primary" @click="submit">
-                Submit
-              </v-btn>
-            </div>
-            <v-progress-circular
+      
+      
+      <div v-if="!sending">
+        <v-textarea
+          v-model="message" 
+          counter
+          no-resize
+          rows="3"
+          label="Tweet"
+          :rules="[v => (v == '' || v.length >= 10) || 'Tweet must be atleast 10 characters', v => v.length <= 280 || 'Tweet must be less than 281 characters']"
+          outlined 
+        ></v-textarea>
+        <v-btn class="primary" @click="submit">
+          Submit
+        </v-btn>
+      </div>
+      <v-progress-circular
               v-else
               size="100"
               class="mt-2"
               color="primary"
               indeterminate />
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <br>        
+      <v-divider></v-divider>
       <v-progress-circular
         v-if="loading"
         size="100"
         class="mt-2"
         color="primary"
         indeterminate />
-      <v-card v-for="(x, idx) in entries" :key="idx" class="mb-1">
+      <v-card class="mt-2">
+        <v-card-title>Tweets</v-card-title>
         <v-card-text>
-          Author: <strong>{{ x.author }}</strong> <br>
-          Date: <strong>{{ x.date }}</strong>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="mt-3" v-html="x.entry" />
+
+          <v-timeline align-top dense>
+            <v-timeline-item v-for="(x, idx) in entries" :key="idx" small>
+              <div>
+                <div class="font-weight-normal">
+                  <strong>{{ x.author }}</strong> <small>@{{ x.date }}</small>
+                </div>
+                <div v-html="x.entry" />
+              </div>
+            </v-timeline-item>
+          </v-timeline>
         </v-card-text>
+        
       </v-card>
       </v-progress-circular>
     </v-col>
@@ -74,7 +64,7 @@ import { TezosToolkit } from '@taquito/taquito'
 import { BeaconWallet } from '@taquito/beacon-wallet'
 import { formatRelative } from 'date-fns'
 
-const contractAddress = 'KT1QYZftD8QWLoXSButfgRn5NGQtfYpA7yNH' // 'KT1NY6sHZnVrtCeCBeDHsQMEt2gJR6A9PC65' //'KT1QKfY2dQ49eLdqZjbN4LNNbPuJyTW718gW' // 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
+const contractAddress = 'KT1QoBbDa9W6DJKbbAucoMdhNtFjdjvEGPqo' // 'KT1NY6sHZnVrtCeCBeDHsQMEt2gJR6A9PC65' //'KT1QKfY2dQ49eLdqZjbN4LNNbPuJyTW718gW' // 'KT1NunBWtpABstxkqW7QJAfBWUbFHxn2zCXX'
 const rpc_addr = 'https://florencenet.smartpy.io/' // 'https://florence-tezos.giganode.io' // //'https://api.tez.ie/rpc/florencenet'
 const network = "florencenet"
 
@@ -114,7 +104,6 @@ export default {
       this.error = null
       this.contract = await this.Tezos.contract.at(contractAddress)
       const storage = await this.contract.storage()
-
       // "zip" the three storage arrays together into objects
       const data = storage.authors.map(function (author, i) {
         return {
@@ -127,9 +116,10 @@ export default {
       this.loading = false
     },
     async submit () {
+      if (this.message.length<10 || this.message.length > 280) {return}
       this.error = null
       const walletOptions = {
-        name: 'Tezos Guestbook'
+        name: 'Tezos Tweet'
       }
       const wallet = new BeaconWallet(walletOptions)
 
@@ -140,17 +130,11 @@ export default {
             rpcUrl: rpc_addr,
           },
         });
-        // await wallet.requestPermissions({
-        //   network: {
-        //     type: 'edonet'
-        //   }
-        // })
       } catch (e) {
         this.error = e.description
         return
       }
-      // const userAddress = await wallet.getPKH()
-      // console.log(userAddress)
+      const userAddress = await wallet.getPKH()
 
       this.Tezos.setProvider({ wallet })
 
@@ -162,7 +146,7 @@ export default {
       try {
         operation = await (contract.methods.default(
           // parameter order should match the entrypoint in the smart contract
-          this.author,
+          userAddress,
           this.message
         ).send())
       } catch (e) {
@@ -176,6 +160,8 @@ export default {
       const opResult = await operation.confirmation()
       this.confirming = false
       if (opResult.completed) {
+        this.author = ''
+        this.message = ''
         this.refresh()
       } else {
         this.error = 'An error has occurred'

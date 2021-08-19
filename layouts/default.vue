@@ -1,20 +1,14 @@
 <template>
   <v-app dark>
-    <v-app-bar fixed app>
-      <v-toolbar-title>
-        Tezos Guestbook
-      </v-toolbar-title>
-      <v-spacer />
-      <span class="net">
-        Edonet (testnet)
-      </span>
-      <a class="link ml-2" about="_blank" href="https://github.com/styts/tz-guestbook">
-        <v-icon large>mdi-github</v-icon>
-      </a>
-      <a class="link ml-2" about="_blank" href="https://twitter.com/tzatzikitz">
-        <v-icon large>mdi-twitter</v-icon>
-      </a>
-    </v-app-bar>
+   
+    <v-alert
+      border="bottom"
+      color="red"
+      dark
+    >
+      <h1>Tezos Tweet:  Florencenet (testnet)</h1> 
+     The data is stored in a <a about="_blank" href="https://better-call.dev/florencenet/KT1QoBbDa9W6DJKbbAucoMdhNtFjdjvEGPqo/operations">smart contract</a> on the testnet. The testnet can be reset any time, so this data will likely get lost.
+    </v-alert>
     <v-main>
       <v-container>
         <nuxt />
@@ -35,5 +29,8 @@ export default {
 <style>
   .link {
     text-decoration: none;
+  }
+  a {
+    color: #ccc;
   }
 </style>
