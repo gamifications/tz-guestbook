@@ -10,7 +10,7 @@ This dapp is heavily inspired from:
 
 ### [Demo on Mainnet](https://tztweet.xyz)
 ### [Demo on Florencenet Testnet](https://test.tztweet.xyz)
-### [Demo on YouTube](https://www.youtube.com/watch?v=xxxxxxx)
+### [Demo on YouTube](https://www.youtube.com/watch?v=YyBY7A2tDoA)
 
 
 ## The problem
